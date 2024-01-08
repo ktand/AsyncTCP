@@ -19,7 +19,11 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#ifdef ARDUINO
 #include "Arduino.h"
+#else
+#include "ArduinoCompatibility.h"
+#endif
 
 #include "AsyncTCP.h"
 extern "C"{
@@ -76,7 +80,7 @@ typedef struct {
         };
 } lwip_event_packet_t;
 
-static xQueueHandle _async_queue;
+static QueueHandle_t _async_queue;
 static TaskHandle_t _async_service_task_handle = NULL;
 
 
@@ -882,7 +886,7 @@ void AsyncClient::_error(int8_t err) {
 //In LwIP Thread
 int8_t AsyncClient::_lwip_fin(tcp_pcb* pcb, int8_t err) {
     if(!_pcb || pcb != _pcb){
-        log_e("0x%08x != 0x%08x", (uint32_t)pcb, (uint32_t)_pcb);
+        log_e("0x%08lx != 0x%08lx", (uint32_t)pcb, (uint32_t)_pcb);
         return ERR_OK;
     }
     tcp_arg(_pcb, NULL);
@@ -950,7 +954,7 @@ int8_t AsyncClient::_poll(tcp_pcb* pcb){
         return ERR_OK;
     }
     if(pcb != _pcb){
-        log_e("0x%08x != 0x%08x", (uint32_t)pcb, (uint32_t)_pcb);
+        log_e("0x%08lx != 0x%08lx", (uint32_t)pcb, (uint32_t)_pcb);
         return ERR_OK;
     }
 
