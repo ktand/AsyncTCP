@@ -33,7 +33,6 @@ extern "C"
 #include "lwip/inet.h"
 #include "lwip/opt.h"
 #include "lwip/tcp.h"
-
 }
 #include "esp_task_wdt.h"
 
@@ -289,7 +288,7 @@ static bool _start_async_task()
     }
     if (!_async_service_task_handle)
     {
-        xTaskCreateUniversal(_async_service_task, "async_tcp", 8192, NULL, 3, &_async_service_task_handle, CONFIG_ASYNC_TCP_RUNNING_CORE);
+        xTaskCreateUniversal(_async_service_task, "async_tcp", CONFIG_ASYNC_TCP_TASK_STACK, NULL, 3, &_async_service_task_handle, CONFIG_ASYNC_TCP_RUNNING_CORE);
         if (!_async_service_task_handle)
         {
             return false;

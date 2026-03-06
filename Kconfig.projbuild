@@ -27,4 +27,8 @@ config ASYNC_TCP_USE_WDT
     help
         Enable WDT for the AsyncTCP task, so it will trigger if a handler is locking the thread.
 
+config ASYNC_TCP_TASK_STACK
+    int "Stack size for the AsyncTCP task"
+    default 8192
+
 endmenu
